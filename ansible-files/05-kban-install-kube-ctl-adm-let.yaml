@@ -1,0 +1,37 @@
+#################################################################
+##### INSTALL AND CONFIGURE KUBELET/KUBEADM/KUBECTL         #####
+#################################################################
+- name: INSTALL APPLICATIONS KUBELET, KUBEADM and KUBECTL
+  hosts: control_plane_master,worker_node
+  gather_facts: no
+  vars_files: "/storage/automacao/ansible-files/kban-variables.yaml"
+  tasks:
+  - name: Loading variables
+    ansible.builtin.include_vars:
+      dir: "/"
+      files_matching: kban-variables.yaml
+  - name: Requirements Install
+    apt:
+      pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - vim
+      - gnupg
+      - lsb-release
+      - nfs-common
+      #    - name: KUBERNETES - Add Repo Key
+      #      apt_key:
+      #        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      #        state: present
+  - name: KUBERNETES - Add Repo
+    apt_repository:
+      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+      state: present
+  - name: Install Kubeadm, Kubectl and Kubelet
+    apt:
+      pkg:
+      - kubectl={{ pct_kctl }}
+      - kubeadm={{ pct_kadm }}
+      - kubelet={{ pct_klet }}
+      state: present

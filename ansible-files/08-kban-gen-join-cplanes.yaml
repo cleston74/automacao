@@ -1,0 +1,25 @@
+################################################################
+#### Initializing the New ControlPlane                     #####
+################################################################
+- name: GENERATE JOIN COMMAND CONTROLPLANE
+  hosts: control_plane_master
+  #gather_facts: no
+  # vars_files: "/storage/automacao/ansible-files/kban-variables.yaml"
+  tasks:
+  - name: COPY Script - Generate Join Command ( --->>> )
+    ansible.builtin.copy:
+      src: /storage/automacao/scripts/generate-cp-join.sh
+      dest: /tmp/generate-cp-join.sh
+      mode: '777'
+  - name: EXECUTE Script - Generate Join Command
+    command: /tmp/generate-cp-join.sh
+  # - name: COPY Script - Generate Join Command ( <<<---)
+  #   ansible.builtin.copy:
+  #     dest: /storage/automacao/temp/controlplanejoin.sh
+  #     src: /tmp/controlplanejoin.sh
+  #     #remote_src: yes
+  #     remote_dest: yes
+  #     owner: root
+  #     group: root
+  #     mode: '777'
+

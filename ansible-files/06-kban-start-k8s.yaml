@@ -1,0 +1,79 @@
+#################################################################
+##### Initializing the Cluster                              #####
+#################################################################
+- name: STARTING CLUSTER K8S
+  hosts: control_plane_master
+  vars_files: "/storage/automacao/ansible-files/kban-variables.yaml"
+  tasks:
+  - name: Loading variables
+    ansible.builtin.include_vars:
+      dir: "/"
+      files_matching: kban-variables.yaml
+  # - name: Show variables
+  #   ansible.builtin.debug:
+  #     msg: "'POD: {{ pod_cidr }} |
+  #            SVC: {{ svc_cidr }} |
+  #            MASTER: {{ ip_master }} |
+  #            API: {{ cp_endpoint }} |
+  #            LB: {{ ip_loadbalance }}'"
+  - name: Clean Previous Installations
+    command: kubeadm reset -f
+  - name: Start Cluster with Kubeadm
+    #command: kubeadm init --apiserver-advertise-address={{ ip_master }} --control-plane-endpoint "{{ cp_endpoint }}:6443" \
+    #                      --upload-certs --pod-network-cidr={{ pod_cidr }} --service-cidr={{ svc_cidr }} --apiserver-cert-extra-sans={{ ip_loadbalance }}
+    command: kubeadm init --apiserver-advertise-address={{ ip_master }} --control-plane-endpoint "{{ cp_endpoint }}:6443" \
+                          --upload-certs --pod-network-cidr={{ pod_cidr }} --service-cidr={{ svc_cidr }}
+    # Funciona! -> command: kubeadm init --apiserver-advertise-address=192.168.99.200 --pod-network-cidr=10.100.50.0/22 --service-cidr=10.200.100.0/22
+    # Funciona! -> command: sudo kubeadm init --control-plane-endpoint "clestoncloud.edu:6443" \
+    #   --upload-certs \
+    #   --node-name `hostname -s` \
+    #   --pod-network-cidr=10.100.50.0/22 \
+    #   --service-cidr=10.200.100.0/22 \
+    #   --apiserver-cert-extra-sans={{ ip_loadbalance }} #ip_loadbalance
+  - name: Create directory .kube
+    file:
+      path: ~/.kube
+      state: directory
+      owner: root
+      group: root
+      mode: '644'
+  - name: Copy config file
+    copy:
+      dest: ~/.kube/config
+      src: /etc/kubernetes/admin.conf
+      remote_src: yes
+      owner: root
+      group: root
+      mode: '640'
+  - name: Install Calico
+    command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico.yaml
+
+  - name: Generate Join ControlPlane/Worker Command
+    shell: kubeadm token create --print-join-command
+    register: print_join_command
+  # - debug: msg="{{ print_join_command }}"
+  - name: Add Command Join in set_fact
+    set_fact: join_command="{{ print_join_command.stdout }}"
+
+  - name: Generate Key for Join Others Control Planes
+    shell: kubeadm init phase upload-certs --upload-certs
+
+  # register: print_join_command_key
+  # - ansible.builtin.debug:
+  #     msg: "{{ print_join_command_key }}"
+  # - name: Add Command Key in set_fact
+  #   set_fact: join_command_key="{{ print_join_command_key.stdout }}"
+
+################################################################
+#### Initializing the Workers                              #####
+################################################################
+- name: STARTING JOIN KUBERNETES WORKERS
+  hosts: worker_node
+  tasks:
+  - name: Clean Previous Installations in Workers
+    command: kubeadm reset -f
+  # - name: Show Complete Command
+  #   ansible.builtin.debug:
+  #     msg: "{{ hostvars[groups['control_plane'][0]]['join_command'] }} --control-plane --certificate-key {{ hostvars[groups['control_plane'][0]]['join_command_key'] }}"
+  - name: Executing Join Command in Workers
+    command: "{{ hostvars[groups['control_plane'][0]]['join_command'] }}"

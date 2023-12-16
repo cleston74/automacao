@@ -13,10 +13,17 @@ functionBanner()
     clear
     echo   "+--------------------------------------------------------------------------------------------+"
     echo   "|                                                                                            |"
-    printf "|`tput bold` %-90s `tput sgr0`|\n" "$@"
+    printf "|$(tput bold) %-90s $(tput sgr0)|\n" "$@"
     echo   "|                                                                                            |"
     echo   "+--------------------------------------------------------------------------------------------+"
 }
+
+# echo "    _    ____ __  __ _____                            _  _____ ____  "
+# echo "   / \  / ___|  \/  | ____|  ___  _ __ __ _          | |/ ( _ ) ___| "
+# echo "  / _ \| |   | |\/| |  _|   / _ \| \'__/ _\` |  _____  | ' // _ \___ \ "
+# echo " / ___ \ |___| |  | | |___ | (_) | | | (_| | |_____| | . \ (_) |__) |"
+# echo "/_/   \_\____|_|  |_|_____(_)___/|_|  \__, |         |_|\_\___/____/ "
+# echo "                                      |___/                          "
 
 echo "  ____              ____  ____  _               _  _____ ____   "
 echo " |  _ \ _   _ _ __ |___ \| __ )(_)____         | |/ ( _ ) ___|  "
@@ -24,7 +31,7 @@ echo " | |_) | | | | '_ \  __) |  _ \| |_  /  _____  | ' // _ \___ \  "
 echo " |  _ <| |_| | | | |/ __/| |_) | |/ /  |_____| | . \ (_) |__) | "
 echo " |_| \_\\__,_ |_| |_|_____|____/|_/___|         |_|\_\___/____/  "
 echo ""
-echo "                                       Kubernetes - Single Node"
+echo "                                        Kubernetes - Single Node"
 sleep 5
 
 # Teste de conectividade do Server Ansible com as VMs
@@ -74,10 +81,6 @@ functionBanner "Instalando o Chrony nos Servidores ..."
 /usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/02-kban-install-chrony.yaml
 sleep 3
 
-#functionBanner "Instalando o HAPROXY no Servidor BRSPAPPHA01 ..."
-#/usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/02a-kban-install-haproxy.yaml
-#sleep 3
-
 functionBanner "Copiando hosts para os Servidores ..."
 /usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/03-kban-copy-hosts.yaml
 sleep 3
@@ -93,9 +96,6 @@ sleep 3
 functionBanner "Inicializando o Cluster Kubernetes ..."
 /usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/06-kban-start-k8s.yaml
 
-#functionBanner "Ingressando os Workers Nodes ao Cluster Kubernetes ..."
-#/usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/07-kban-start-join-workers.yaml
-
 functionBanner "Copiando arquivo config do Cluster para o Ansible ..."
 mkdir -p /root/.kube/ &> /dev/null
 /usr/bin/scp -i /root/.ssh/ansible_automacao root@brspappcp01:/etc/kubernetes/admin.conf /root/.kube/config &> /dev/null
@@ -104,7 +104,6 @@ if [ $? -eq 1 ]; then
   echo "Sem ele, não será possível acesso ao Cluster tão pouco a conclusão da instalação."
 else
   functionBanner "Exportando KUBECONFIG..."
-  #export KUBECONFIG=/storage/automacao/temp/config
   export KUBECONFIG=~/.kube/config
   sleep 3
 
@@ -167,29 +166,6 @@ else
     functionBanner "Gerando o arquivo de ingresso para novos ControlPlanes ..."
     /usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/08-kban-gen-join-cplanes.yaml
     sleep 3
-
-    #functionBanner "Copiando o Script de ingresso de novos ControlPlanes..."
-    #/usr/bin/scp -i /root/.ssh/ansible_automacao root@brspappcp01:/var/tmp/controlplanejoin.sh /storage/automacao/scripts/controlplanejoin.sh &> /dev/null
-    #/usr/bin/scp -i /root/.ssh/ansible_automacao root@brspappcp01:/var/tmp/workernodejoin.sh /storage/automacao/scripts/workernodejoin.sh &> /dev/null
-    #if [ $? -eq 1 ]; then
-    #  echo "Não foi possível copiar o arquivo /tmp/controlplanejoin.sh."
-    #  echo "Sem ele, não será possível ingressar novo Cluster."
-    #else
-    #  /usr/bin/scp -i /root/.ssh/ansible_automacao /storage/automacao/temp/controlplanejoin.sh root@brspappcp02:/tmp &> /dev/null
-    #  /usr/bin/scp -i /root/.ssh/ansible_automacao /storage/automacao/temp/controlplanejoin.sh root@brspappcp03:/tmp &> /dev/null
-    #fi
-
-    #functionBanner "Ingressando novos ControlPlanes ..."
-    #/usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/09-kban-start-join-cplanes.yaml
-    #/usr/bin/ssh -i /root/.ssh/ansible_automacao root@brspappcp02 /tmp/controlplanejoin.sh
-    #/usr/bin/ssh -i /root/.ssh/ansible_automacao root@brspappcp03 /tmp/controlplanejoin.sh
-    #sleep 3
-
-    #functionBanner "Alterando Labels dos novos ControlPlanes ..."
-    #/usr/local/bin/kubectl label node brspappcp02 node-role.kubernetes.io/control-plane= &> /dev/null
-    #/usr/local/bin/kubectl label node brspappcp03 node-role.kubernetes.io/control-plane= &> /dev/null
-    #/usr/local/bin/kubectl get nodes
-    #sleep 3
 
     functionBanner "Para acesso ao Cluster, instale o kubectl seguindo a documentação"                          \
                    "https://kubernetes.io/docs/tasks/tools/"                                                    \

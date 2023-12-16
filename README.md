@@ -3,7 +3,7 @@
 VirtualBox (Pode-se utilizar outros virtualizadores, porém, achei mais simples com esse);
 -	Necessário adicionar uma nova rede no VirtualBox.
   
-    ![image](https://github.com/cleston74/automacao/assets/42645665/31d5feca-45a9-49fd-bf9e-a74a34dde30e) ![image](https://github.com/cleston74/automacao/assets/42645665/d9fa8645-a30b-4873-89de-692eaa73a6a9)
+  ![image](https://github.com/cleston74/automacao/assets/42645665/31d5feca-45a9-49fd-bf9e-a74a34dde30e) ![image](https://github.com/cleston74/automacao/assets/42645665/d9fa8645-a30b-4873-89de-692eaa73a6a9)
 
 - IP fixo em todos os servidores, conforme diagrama abaixo;
 

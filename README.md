@@ -152,6 +152,8 @@ Papel: Servidor worker-node
       chmod +x install-kube.sh
       time ./install-kube.sh
 
+![image](https://github.com/cleston74/automacao/assets/42645665/14a758b6-a20b-4a85-9c69-b57caed61761)
+
   *** O tempo de instalação pode variar de acordo com sua internet e performance de seu laboratório.
 
 

@@ -167,20 +167,21 @@ else
     /usr/bin/ansible-playbook -i /storage/automacao/ansible-files/kban-inventory-file /storage/automacao/ansible-files/08-kban-gen-join-cplanes.yaml
     sleep 3
 
-    functionBanner "Para acesso ao Cluster, instale o kubectl seguindo a documentação"                          \
-                   "https://kubernetes.io/docs/tasks/tools/"                                                    \
-                   ""                                                                                           \
-                   "Para acesso ao Cluster a partir do outro computador (Linux), siga os passos abaixo:"        \
+    functionBanner "Para acesso ao Cluster a partir do outro computador (Linux), siga os passos abaixo:"        \
                    "mkdir -p \$HOME/.kube"                                                                      \
                    "scp -i ~/.ssh/ansible_automacao root@brspappcp01:/etc/kubernetes/admin.conf ~/.kube/config" \
                    "sudo chown \$(id -u):\$(id -g) \$HOME/.kube/config"                                         \
                    ""                                                                                           \
+                   "Instale o kubectl seguindo a documentacao oficial do Kubernetes"                            \
+                   "https://kubernetes.io/docs/tasks/tools/"                                                    \
+                   ""                                                                                           \
                    "Acesso para a interface do Longhorn"                                                        \
-                   "http://www.acme.org:30000/"                                                                 \
+                   "http://longhorn.acme.org:30000/"                                                            \
+                   ""                                                                                           \
                    "Para mais detalhes do Longhorn, visite a documentação."                                     \
                    "https://longhorn.io/docs/"                                                                  \
                    ""                                                                                           \
-                   "Para testar seu Cluster, execute o comando abaixo:"                                         \
+                   "Para testar seu Cluster, execute o comando abaixo a partir do Servidor Ansible"             \
                    "Será criado um Volume dinamicamente no Longhorn e um deploy do mongodb"                     \
                    "kubectl apply -f /storage/automacao/exemplos/example-deploy-svc-pvc-ns_mongo-mongo.yaml"    \
                    ""                                                                                           \

@@ -1,6 +1,12 @@
 # Projeto de Instalação Automática de um Cluster Kubernetes
 
-VirtualBox (Pode-se utilizar outros virtualizadores, porém, achei mais simples com esse);
+  Este projeto destina-se a um Laboratório de testes e não deve ser utilizado em produção.
+  
+  A versão do Kubernetes que será instalada: 1.26.5. 
+  
+  Se necessário instalar outra versão, edite o arquivo kban-variables.yaml localizado em /storage/automacao/ansible-files
+  
+É necessário ter o VirtualBox instalado (Pode-se utilizar outros virtualizadores, porém, achei mais simples com esse);
 -	Necessário adicionar uma nova rede no VirtualBox.
   
   ![image](https://github.com/cleston74/automacao/assets/42645665/31d5feca-45a9-49fd-bf9e-a74a34dde30e) ![image](https://github.com/cleston74/automacao/assets/42645665/d9fa8645-a30b-4873-89de-692eaa73a6a9)
@@ -152,8 +158,17 @@ Papel: Servidor worker-node
       chmod +x install-kube.sh
       time ./install-kube.sh
 
-![image](https://github.com/cleston74/automacao/assets/42645665/14a758b6-a20b-4a85-9c69-b57caed61761)
+- Resumo da instalação
+  
+  ![image](https://github.com/cleston74/automacao/assets/42645665/692adf7c-6359-4227-be38-5de3d8f698a2)
 
   *** O tempo de instalação pode variar de acordo com sua internet e performance de seu laboratório.
 
+- Longhorn
+
+  ![image](https://github.com/cleston74/automacao/assets/42645665/b59d8249-86f9-4a46-876b-f36a746a7aa7)
+
+- Kubernetes Dashboard
+
+  ![image](https://github.com/cleston74/automacao/assets/42645665/0d844153-4712-475d-8e45-2d9a30e02235)
 

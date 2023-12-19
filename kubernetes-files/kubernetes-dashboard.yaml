@@ -40,8 +40,8 @@ spec:
   ports:
   - port: 443
     targetPort: 8443
-    # nodePort: 30001
-  type: ClusterIP
+    nodePort: 30001
+  type: NodePort
   selector:
     k8s-app: kubernetes-dashboard
 
@@ -326,8 +326,3 @@ subjects:
 - kind: ServiceAccount
   name: sysadmin
   namespace: kubernetes-dashboard
-
-# Geração do Token
-# kubectl -n kubernetes-dashboard create token sysadmin
-# URL de acesso
-# https://acme.org:30001

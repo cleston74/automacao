@@ -18,20 +18,21 @@ functionBanner()
     echo   "+--------------------------------------------------------------------------------------------+"
 }
 
-# echo "    _    ____ __  __ _____                            _  _____ ____  "
-# echo "   / \  / ___|  \/  | ____|  ___  _ __ __ _          | |/ ( _ ) ___| "
-# echo "  / _ \| |   | |\/| |  _|   / _ \| \'__/ _\` |  _____  | ' // _ \___ \ "
-# echo " / ___ \ |___| |  | | |___ | (_) | | | (_| | |_____| | . \ (_) |__) |"
-# echo "/_/   \_\____|_|  |_|_____(_)___/|_|  \__, |         |_|\_\___/____/ "
-# echo "                                      |___/                          "
+echo "    _    ____ __  __ _____                            _  _____ ____  "
+echo "   / \  / ___|  \/  | ____|  ___  _ __ __ _          | |/ ( _ ) ___| "
+echo "  / _ \| |   | |\/| |  _|   / _ \| \'__/ _\` | _____  | ' // _ \___ \ "
+echo " / ___ \ |___| |  | | |___ | (_) | | | (_| | |_____| | . \ (_) |__) |"
+echo "/_/   \_\____|_|  |_|_____(_)___/|_|  \__, |         |_|\_\___/____/ "
+echo "                                      |___/                          "
+echo "                                             Kubernetes - Single Node"
 
-echo "  ____              ____  ____  _               _  _____ ____   "
-echo " |  _ \ _   _ _ __ |___ \| __ )(_)____         | |/ ( _ ) ___|  "
-echo " | |_) | | | | '_ \  __) |  _ \| |_  /  _____  | ' // _ \___ \  "
-echo " |  _ <| |_| | | | |/ __/| |_) | |/ /  |_____| | . \ (_) |__) | "
-echo " |_| \_\\__,_ |_| |_|_____|____/|_/___|         |_|\_\___/____/  "
-echo ""
-echo "                                        Kubernetes - Single Node"
+#echo "  ____              ____  ____  _               _  _____ ____   "
+#echo " |  _ \ _   _ _ __ |___ \| __ )(_)____         | |/ ( _ ) ___|  "
+#echo " | |_) | | | | '_ \  __) |  _ \| |_  /  _____  | ' // _ \___ \  "
+#echo " |  _ <| |_| | | | |/ __/| |_) | |/ /  |_____| | . \ (_) |__) | "
+#echo " |_| \_\\__,_ |_| |_|_____|____/|_/___|         |_|\_\___/____/  "
+#echo ""
+#echo "                                        Kubernetes - Single Node"
 sleep 5
 
 # Teste de conectividade do Server Ansible com as VMs
@@ -178,11 +179,17 @@ else
                    "Acesso para a interface do Longhorn"                                                        \
                    "http://longhorn.acme.org:30000/"                                                            \
                    ""                                                                                           \
-                   "Para mais detalhes do Longhorn, visite a documentação."                                     \
+                   "Para mais detalhes do Longhorn, visite a documentacao."                                     \
                    "https://longhorn.io/docs/"                                                                  \
                    ""                                                                                           \
+                   "Acesse o Dashboard do Kubernetes"                                                           \
+                   "http://dashboard.acme.org:30001/"                                                           \
+                   ""                                                                                           \
+                   "Para gerar o token de acesso ao Dashboard, siga os passos abaixo:"                          \
+                   "kubectl -n kubernetes-dashboard create token sysadmin"                                      \
+                   ""                                                                                           \
                    "Para testar seu Cluster, execute o comando abaixo a partir do Servidor Ansible"             \
-                   "Será criado um Volume dinamicamente no Longhorn e um deploy do mongodb"                     \
+                   "Sera criado um Volume dinamicamente no Longhorn e um deploy do mongodb"                     \
                    "kubectl apply -f /storage/automacao/exemplos/example-deploy-svc-pvc-ns_mongo-mongo.yaml"    \
                    ""                                                                                           \
                    "Para verificar se o deploy ocorreu com sucesso"                                             \

@@ -70,13 +70,13 @@ Papel: Servidor worker-node
       ssh-keygen -t rsa -b 2048
   
 
-- Para copiar sua chave SSH para os demais servidores, execute o comando abaixo:
+- Para copiar sua chave SSH para os demais servidores, execute o comando abaixo: \
   *** Altere XXXX para o nome correto do Servidor
   
       ssh-copy-id -i /root/.ssh/ansible_automacao.pub root@brspappXXXX
   
 
-- Executar um primeiro acesso da máquina Ansible (BRSPAPPAN01) ao Control Plane (BRSPAPPCP01) e a cada Worker Node (BRSPAPPWK01 e BRSPAPPWK02).
+- Executar um primeiro acesso da máquina Ansible (BRSPAPPAN01) ao Control Plane (BRSPAPPCP01) e a cada Worker Node (BRSPAPPWK01 e BRSPAPPWK02). \
   *** Altere XXXX para o nome correto do Servidor
   
       ssh -i /root/.ssh/ansible_automacao root@brspappXXXX

@@ -25,14 +25,6 @@ echo " / ___ \ |___| |  | | |___ | (_) | | | (_| | |_____| | . \ (_) |__) |"
 echo "/_/   \_\____|_|  |_|_____(_)___/|_|  \__, |         |_|\_\___/____/ "
 echo "                                      |___/                          "
 echo "                                             Kubernetes - Single Node"
-
-#echo "  ____              ____  ____  _               _  _____ ____   "
-#echo " |  _ \ _   _ _ __ |___ \| __ )(_)____         | |/ ( _ ) ___|  "
-#echo " | |_) | | | | '_ \  __) |  _ \| |_  /  _____  | ' // _ \___ \  "
-#echo " |  _ <| |_| | | | |/ __/| |_) | |/ /  |_____| | . \ (_) |__) | "
-#echo " |_| \_\\__,_ |_| |_|_____|____/|_/___|         |_|\_\___/____/  "
-#echo ""
-#echo "                                        Kubernetes - Single Node"
 sleep 5
 
 # Teste de conectividade do Server Ansible com as VMs
@@ -41,9 +33,9 @@ functionBanner "Testando conectividade com todos os Servidores..."
 for host in "${hosts[@]}"; do
   ping -c 3 "$host" &> /dev/null
   if [ $? -eq 0 ]; then
-    echo "$host está alcançavel."
+    echo "$host ping OK."
   else
-    echo "$host não está alcançavel."
+    echo "$host não foi possível executar o ping."
     echo "Um ou mais Servidores não foram alcançados, verifique as configurações de /etc/hosts ou outras configurações"
     exit 1
   fi
@@ -103,6 +95,7 @@ mkdir -p /root/.kube/ &> /dev/null
 if [ $? -eq 1 ]; then
   echo "Não foi possível copiar o arquivo /etc/kubernetes/admin.conf."
   echo "Sem ele, não será possível acesso ao Cluster tão pouco a conclusão da instalação."
+  exit 1
 else
   functionBanner "Exportando KUBECONFIG..."
   export KUBECONFIG=~/.kube/config
@@ -145,14 +138,14 @@ else
       while read line
       do
         num=$(echo $line | awk '{print $1}')
-        if [ "$num" -gt 40 ]; then
+        if [ "$num" -gt 35 ]; then
           functionBanner "Cluster KUBERNETES pronto pra uso!!!"
           found=true
           break
         fi
         clear
         echo ""
-        echo " Total de PODs prontos: $line de 40 "
+        echo " Total de PODs prontos: $line de 35 "
         echo ""
       done < /var/tmp/total.log
       if [ "$found" = false ]; then
